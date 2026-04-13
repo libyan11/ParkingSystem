@@ -5,10 +5,9 @@ plugins {
 }
 
 android {
-    kotlinOptions {
-        freeCompilerArgs += listOf("-XXLanguage:-K2")
 
-    }
+
+    
 
     namespace = "com.example.parkingapp"
     compileSdk = 36
