@@ -13,7 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParkingApp">
         <activity
-            android:name=".detailsActivity"
+            android:name=".HomeActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".DetailsActivity"
             android:exported="false" />
         <activity
             android:name=".NewuserActivity"

@@ -34,6 +34,7 @@ class HomeActivity : AppCompatActivity() {
 
             override fun onDataChange(snapshot: DataSnapshot) {
 
+
                 carparkList.clear()
                 carparkKeys.clear()
 
