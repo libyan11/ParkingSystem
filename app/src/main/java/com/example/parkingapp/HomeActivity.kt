@@ -23,7 +23,9 @@ class HomeActivity : AppCompatActivity() {
         listView = findViewById(R.id.listViewParking)
 
         // 🔥 Firebase reference
-        database = FirebaseDatabase.getInstance().getReference("locations")
+        database = FirebaseDatabase.getInstance(
+            "https://parking-1034e-default-rtdb.europe-west1.firebasedatabase.app"
+        ).getReference("locations")
 
         loadCarParks()
     }
@@ -48,6 +50,7 @@ class HomeActivity : AppCompatActivity() {
                         carparkList.add("$name - Available: $available")
                         carparkKeys.add(carpark.key!!)
                     }
+                    println("DATA: " + snapshot.value)
                 }
 
                 val adapter = ArrayAdapter(
