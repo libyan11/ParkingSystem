@@ -3,71 +3,120 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#F5F5F5">
+    android:background="#F3F4F6"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingStart="16dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="24dp">
 
-        <ImageView
-            android:id="@+id/imageViewLocation"
+        <LinearLayout
+            android:layout_width="385dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/buttonBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="Back"
+                android:padding="8dp"
+                android:src="@android:drawable/ic_media_previous" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/icon" />
-
-        <TextView
-            android:id="@+id/textViewLocationName"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="Car Park Name"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp">
 
-        <TextView
-            android:id="@+id/textViewAvailable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Available: 0 / 0"
-            android:textSize="20sp" />
+            <ImageView
+                android:id="@+id/imageViewLocation"
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/icon" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textViewFullness"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="0% Full"
-            android:textSize="18sp" />
-
-        <ProgressBar
-            android:id="@+id/progressBarCapacity"
-            style="?android:attr/progressBarStyleHorizontal"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="12dp"
-            android:layout_marginTop="16dp"
-            android:max="100"
-            android:progress="0" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:padding="18dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/textViewLocationName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Car Park Name"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:textColor="#111827" />
+
+            <TextView
+                android:id="@+id/textViewAvailable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Available: 0 / 0"
+                android:textSize="20sp"
+                android:textColor="#374151" />
+
+            <TextView
+                android:id="@+id/textViewFullness"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="0% Full"
+                android:textSize="17sp"
+                android:textColor="#6B7280" />
+
+            <ProgressBar
+                android:id="@+id/progressBarCapacity"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:layout_marginTop="18dp"
+                android:max="100"
+                android:progress="0" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/buttonToggleSlots"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="24dp"
+            android:layout_height="56dp"
             android:text="Show Parking Slots"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp" />
 
         <ListView
             android:id="@+id/listViewSpaces"
             android:layout_width="match_parent"
-            android:layout_height="320dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="420dp"
             android:visibility="gone"
-            android:divider="#DDDDDD"
-            android:dividerHeight="1dp" />
+            android:divider="#E5E7EB"
+            android:dividerHeight="1dp"
+            android:background="@android:color/white" />
 
     </LinearLayout>
 </ScrollView>
