@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+# Python detector
+serviceAccountKey.json
+__pycache__/
+*.pyc
+.vscode/
