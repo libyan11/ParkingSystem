@@ -2,11 +2,11 @@
 
 Smart parking system using:
 
-- Android mobile app
-- Python OpenCV detector
-- Firebase Realtime Database
+Android mobile app
+Python OpenCV detector
+Firebase Realtime Database
 
-## Project Structure
+#Project Structure
 
 /app = Android Studio app  
 /PYTHONDETECTOR = Python detection scripts
