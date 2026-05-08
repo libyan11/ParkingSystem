@@ -1,4 +1,4 @@
-package com.example.parkingapp
+package com.example.parkingapp.controller
 
 import android.content.Context
 import android.graphics.Color
@@ -8,19 +8,20 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.parkingapp.R
+import com.example.parkingapp.model.CarPark
 
 class HomepageAdapter(
     private val context: Context,
-    private val names: List<String>,
-    private val spaces: List<Int>
+    private val carparks: List<CarPark>
 ) : BaseAdapter() {
 
     override fun getCount(): Int {
-        return names.size
+        return carparks.size
     }
 
     override fun getItem(position: Int): Any {
-        return names[position]
+        return carparks[position]
     }
 
     override fun getItemId(position: Int): Long {
@@ -36,13 +37,12 @@ class HomepageAdapter(
         val textViewSpaces = view.findViewById<TextView>(R.id.textViewSpaces)
         val textViewStatus = view.findViewById<TextView>(R.id.textViewStatus)
 
-        val name = names[position]
-        val available = spaces[position]
+        val carpark = carparks[position]
 
-        textViewParkingName.text = name
-        textViewSpaces.text = "Available Spaces: $available"
+        textViewParkingName.text = carpark.name
+        textViewSpaces.text = "Available Spaces: ${carpark.available}"
 
-        if (available > 0) {
+        if (carpark.available > 0) {
             textViewStatus.text = "Status: Available"
             textViewStatus.setTextColor(Color.parseColor("#2E7D32"))
         } else {
