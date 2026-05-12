@@ -8,19 +8,23 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.ImageButton
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import com.example.parkingapp.R
+import com.example.parkingapp.controller.adapters.HomepageAdapter
 import com.example.parkingapp.model.CarPark
 import com.google.firebase.database.*
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var listView: ListView
-    private lateinit var database: DatabaseReference
     private lateinit var textViewLastUpdated: TextView
+    private lateinit var buttonAccount: ImageButton
+
+    private lateinit var database: DatabaseReference
 
     private val carparkList = ArrayList<CarPark>()
     private val previousAvailability = HashMap<String, Int>()
@@ -34,6 +38,12 @@ class HomeActivity : AppCompatActivity() {
 
         listView = findViewById(R.id.listViewParking)
         textViewLastUpdated = findViewById(R.id.textViewLastUpdated)
+        buttonAccount = findViewById(R.id.buttonAccount)
+
+        buttonAccount.setOnClickListener {
+            val intent = Intent(this, AccountActivity::class.java)
+            startActivity(intent)
+        }
 
         createNotificationChannel()
 
@@ -51,28 +61,34 @@ class HomeActivity : AppCompatActivity() {
 
                 for (carparkSnapshot in snapshot.children) {
                     val key = carparkSnapshot.key ?: ""
-                    val name = carparkSnapshot.child("name").getValue(String::class.java)
-                    val available = carparkSnapshot.child("available").getValue(Int::class.java)
-                    val total = carparkSnapshot.child("total").getValue(Int::class.java) ?: 0
 
-                    if (name != null && available != null) {
-                        val carpark = CarPark(
-                            id = key,
-                            name = name,
-                            available = available,
-                            total = total
-                        )
+                    val name = carparkSnapshot.child("name")
+                        .getValue(String::class.java) ?: key
 
-                        carparkList.add(carpark)
+                    val available = carparkSnapshot.child("available")
+                        .getValue(Number::class.java)
+                        ?.toInt() ?: 0
 
-                        val previous = previousAvailability[key]
+                    val total = carparkSnapshot.child("total")
+                        .getValue(Number::class.java)
+                        ?.toInt() ?: 0
 
-                        if (previous != null && previous == 0 && available > 0) {
-                            showNotification(name, available)
-                        }
+                    val carpark = CarPark(
+                        id = key,
+                        name = name,
+                        available = available,
+                        total = total
+                    )
 
-                        previousAvailability[key] = available
+                    carparkList.add(carpark)
+
+                    val previous = previousAvailability[key]
+
+                    if (previous != null && previous == 0 && available > 0) {
+                        showNotification(name, available)
                     }
+
+                    previousAvailability[key] = available
                 }
 
                 val adapter = HomepageAdapter(
@@ -93,6 +109,7 @@ class HomeActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
+                textViewLastUpdated.text = "Failed to load parking data"
             }
         })
     }
@@ -108,7 +125,7 @@ class HomeActivity : AppCompatActivity() {
         )
 
         val notification = NotificationCompat.Builder(this, "parking_channel")
-            .setSmallIcon(R.drawable.icon)
+            .setSmallIcon(R.drawable.icon_account)
             .setContentTitle("Parking Available")
             .setContentText("$carparkName now has $available spaces available.")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
