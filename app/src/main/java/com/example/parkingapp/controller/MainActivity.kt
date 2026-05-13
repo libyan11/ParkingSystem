@@ -53,4 +53,17 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, NewuserActivity::class.java))
         }
     }
+    companion object {
+        fun validateInput(email: String, password: String): String? {
+            return when {
+                email.trim().isEmpty() || password.trim().isEmpty() -> {
+                    "Please enter email and password"
+                }
+                password.trim().length < 6 -> {
+                    "Password must be at least 6 characters"
+                }
+                else -> null
+            }
+        }
+    }
 }

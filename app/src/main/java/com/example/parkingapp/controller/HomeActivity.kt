@@ -16,7 +16,11 @@ import androidx.core.app.NotificationCompat
 import com.example.parkingapp.R
 import com.example.parkingapp.controller.adapters.HomepageAdapter
 import com.example.parkingapp.model.CarPark
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class HomeActivity : AppCompatActivity() {
 
@@ -65,13 +69,8 @@ class HomeActivity : AppCompatActivity() {
                     val name = carparkSnapshot.child("name")
                         .getValue(String::class.java) ?: key
 
-                    val available = carparkSnapshot.child("available")
-                        .getValue(Number::class.java)
-                        ?.toInt() ?: 0
-
-                    val total = carparkSnapshot.child("total")
-                        .getValue(Number::class.java)
-                        ?.toInt() ?: 0
+                    val available = (carparkSnapshot.child("available").value as? Number)?.toInt() ?: 0
+                    val total = (carparkSnapshot.child("total").value as? Number)?.toInt() ?: 0
 
                     val carpark = CarPark(
                         id = key,

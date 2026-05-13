@@ -29,7 +29,8 @@
                 android:background="@android:color/transparent"
                 android:contentDescription="Back"
                 android:padding="8dp"
-                android:src="@android:drawable/ic_media_previous" />
+                android:src="@android:drawable/ic_media_previous"
+                android:tint="#2D6CDF" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -52,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="260dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/icon" />
+                android:src="@drawable/dmu_icon" />
         </LinearLayout>
 
         <LinearLayout
@@ -109,15 +110,6 @@
             android:backgroundTint="#2D6CDF"
             android:textSize="16sp"
             android:layout_marginBottom="16dp" />
-
-        <ListView
-            android:id="@+id/listViewSpaces"
-            android:layout_width="match_parent"
-            android:layout_height="420dp"
-            android:visibility="gone"
-            android:divider="#E5E7EB"
-            android:dividerHeight="1dp"
-            android:background="@android:color/white" />
 
     </LinearLayout>
 </ScrollView>

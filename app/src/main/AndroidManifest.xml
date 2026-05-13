@@ -26,6 +26,9 @@
         <activity
             android:name=".controller.NewuserActivity"
             android:exported="false" />
+        <activity
+            android:name=".controller.AccountActivity"
+            android:exported="false" />
 
         <activity
             android:name=".controller.MainActivity"
