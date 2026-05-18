@@ -25,13 +25,13 @@
                 android:layout_height="99dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="16dp"
-                android:src="@drawable/icon" />
+                android:src="@drawable/iconapp1" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="ParkSpace"
+                android:text="ParkQ"
                 android:textColor="#111827"
                 android:textSize="28sp"
                 android:textStyle="bold" />

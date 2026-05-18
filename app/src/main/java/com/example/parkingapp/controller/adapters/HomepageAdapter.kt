@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.example.parkingapp.R
 import com.example.parkingapp.model.CarPark
 
@@ -34,12 +35,14 @@ class HomepageAdapter(
 
         val imageParking = view.findViewById<ImageView>(R.id.imageParking)
         val textViewParkingName = view.findViewById<TextView>(R.id.textViewParkingName)
+        val textViewLocation = view.findViewById<TextView>(R.id.textViewLocation)
         val textViewSpaces = view.findViewById<TextView>(R.id.textViewSpaces)
         val textViewStatus = view.findViewById<TextView>(R.id.textViewStatus)
 
         val carpark = carparks[position]
 
         textViewParkingName.text = carpark.name
+        textViewLocation.text = carpark.location
         textViewSpaces.text = "Available Spaces: ${carpark.available}"
 
         if (carpark.available > 0) {
@@ -50,7 +53,18 @@ class HomepageAdapter(
             textViewStatus.setTextColor(Color.RED)
         }
 
-        imageParking.setImageResource(R.drawable.dmu_icon)
+        val imageUrl = carpark.imageUrl.trim()
+
+        if (imageUrl.isNotEmpty()) {
+            Glide.with(context)
+                .load(imageUrl)
+                .placeholder(R.drawable.icon)
+                .error(R.drawable.icon)
+                .centerCrop()
+                .into(imageParking)
+        } else {
+            imageParking.setImageResource(R.drawable.icon)
+        }
 
         return view
     }

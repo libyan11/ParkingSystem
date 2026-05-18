@@ -13,7 +13,12 @@ class AccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
 
+        val buttonBackHome = findViewById<Button>(R.id.buttonBackHome)
         val buttonSignOut = findViewById<Button>(R.id.buttonSignOut)
+
+        buttonBackHome.setOnClickListener {
+            finish()
+        }
 
         buttonSignOut.setOnClickListener {
             FirebaseAuth.getInstance().signOut()

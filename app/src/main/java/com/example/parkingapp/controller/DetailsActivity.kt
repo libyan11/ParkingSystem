@@ -4,9 +4,11 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.parkingapp.R
 import com.example.parkingapp.model.ParkingSlot
 import com.google.firebase.database.DataSnapshot
@@ -16,7 +18,9 @@ import com.google.firebase.database.ValueEventListener
 
 class DetailsActivity : AppCompatActivity() {
 
+    private lateinit var imageViewLocation: ImageView
     private lateinit var textViewLocationName: TextView
+    private lateinit var textViewLocationAddress: TextView
     private lateinit var textViewAvailable: TextView
     private lateinit var textViewFullness: TextView
     private lateinit var progressBarCapacity: ProgressBar
@@ -29,7 +33,9 @@ class DetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
 
+        imageViewLocation = findViewById(R.id.imageViewLocation)
         textViewLocationName = findViewById(R.id.textViewLocationName)
+        textViewLocationAddress = findViewById(R.id.textViewLocationAddress)
         textViewAvailable = findViewById(R.id.textViewAvailable)
         textViewFullness = findViewById(R.id.textViewFullness)
         progressBarCapacity = findViewById(R.id.progressBarCapacity)
@@ -51,7 +57,7 @@ class DetailsActivity : AppCompatActivity() {
             "https://parking-1034e-default-rtdb.europe-west1.firebasedatabase.app"
         )
 
-        loadCarParkName(carparkId)
+        loadCarParkDetails(carparkId)
         loadSlotsAndCalculateAvailability(carparkId)
 
         buttonToggleSlots.setOnClickListener {
@@ -59,19 +65,45 @@ class DetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadCarParkName(carparkId: String) {
-        val nameRef = database.getReference("locations")
-            .child(carparkId)
-            .child("name")
+    private fun loadCarParkDetails(carparkId: String) {
+        val locationRef = database.getReference("locations").child(carparkId)
 
-        nameRef.addValueEventListener(object : ValueEventListener {
+        locationRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val name = snapshot.getValue(String::class.java) ?: carparkId
+                val name = snapshot.child("name")
+                    .getValue(String::class.java)
+                    ?.trim()
+                    ?: carparkId
+
+                val location = snapshot.child("location")
+                    .getValue(String::class.java)
+                    ?.trim()
+                    ?: "Location not available"
+
+                val imageUrl = snapshot.child("imageUrl")
+                    .getValue(String::class.java)
+                    ?.trim()
+                    ?: ""
+
                 textViewLocationName.text = name
+                textViewLocationAddress.text = location.ifEmpty { "Location not available" }
+
+                if (imageUrl.isNotEmpty()) {
+                    Glide.with(this@DetailsActivity)
+                        .load(imageUrl)
+                        .placeholder(R.drawable.icon)
+                        .error(R.drawable.icon)
+                        .centerCrop()
+                        .into(imageViewLocation)
+                } else {
+                    imageViewLocation.setImageResource(R.drawable.icon)
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {
                 textViewLocationName.text = carparkId
+                textViewLocationAddress.text = "Location not available"
+                imageViewLocation.setImageResource(R.drawable.icon)
             }
         })
     }
@@ -88,7 +120,16 @@ class DetailsActivity : AppCompatActivity() {
 
                 for (space in snapshot.children) {
                     val slotName = space.key ?: continue
-                    val isAvailable = space.getValue(Boolean::class.java) ?: false
+                    val value = space.value
+
+                    val isAvailable = when (value) {
+                        is Boolean -> value
+                        is Long -> value == 1L
+                        is Int -> value == 1
+                        is Double -> value == 1.0
+                        is String -> value == "1" || value.equals("true", ignoreCase = true)
+                        else -> false
+                    }
 
                     totalSpaces++
 
@@ -96,12 +137,12 @@ class DetailsActivity : AppCompatActivity() {
                         availableSpaces++
                     }
 
-                    val slot = ParkingSlot(
-                        name = slotName,
-                        available = isAvailable
+                    slotList.add(
+                        ParkingSlot(
+                            name = slotName,
+                            available = isAvailable
+                        )
                     )
-
-                    slotList.add(slot)
                 }
 
                 updateSummary(availableSpaces, totalSpaces)

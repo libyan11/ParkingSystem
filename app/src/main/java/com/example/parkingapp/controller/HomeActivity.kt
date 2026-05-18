@@ -67,16 +67,35 @@ class HomeActivity : AppCompatActivity() {
                     val key = carparkSnapshot.key ?: ""
 
                     val name = carparkSnapshot.child("name")
-                        .getValue(String::class.java) ?: key
+                        .getValue(String::class.java)
+                        ?.trim()
+                        ?: ""
 
-                    val available = (carparkSnapshot.child("available").value as? Number)?.toInt() ?: 0
-                    val total = (carparkSnapshot.child("total").value as? Number)?.toInt() ?: 0
+                    val imageUrl = carparkSnapshot.child("imageUrl")
+                        .getValue(String::class.java)
+                        ?.trim()
+                        ?: ""
+
+                    val location = carparkSnapshot.child("location")
+                        .getValue(String::class.java)
+                        ?.trim()
+                        ?: ""
+
+                    val available = getNumberValue(carparkSnapshot.child("available"))
+                    val total = getNumberValue(carparkSnapshot.child("total"))
+
+                    // Do not show empty placeholder car parks such as loc3/loc4/loc5
+                    if (name.isEmpty()) {
+                        continue
+                    }
 
                     val carpark = CarPark(
                         id = key,
                         name = name,
                         available = available,
-                        total = total
+                        total = total,
+                        location = location.ifEmpty { "Location not available" },
+                        imageUrl = imageUrl
                     )
 
                     carparkList.add(carpark)
@@ -111,6 +130,18 @@ class HomeActivity : AppCompatActivity() {
                 textViewLastUpdated.text = "Failed to load parking data"
             }
         })
+    }
+
+    private fun getNumberValue(snapshot: DataSnapshot): Int {
+        val value = snapshot.value
+
+        return when (value) {
+            is Long -> value.toInt()
+            is Int -> value
+            is Double -> value.toInt()
+            is String -> value.toIntOrNull() ?: 0
+            else -> 0
+        }
     }
 
     private fun showNotification(carparkName: String, available: Int) {

@@ -22,7 +22,7 @@
             android:layout_width="46dp"
             android:layout_height="46dp"
             android:translationY="6dp"
-            android:src="@drawable/icon"
+            android:src="@drawable/iconapp1"
             android:contentDescription="Company logo" />
 
         <TextView
@@ -32,9 +32,9 @@
             android:layout_weight="1"
             android:layout_marginStart="10dp"
             android:translationY="8dp"
-            android:text="Smart Parking"
+            android:text="ParkQ"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textStyle="bold" />
 
         <ImageButton
@@ -69,7 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Updated a moment ago"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textColor="#555555"
         android:gravity="center"
         android:layout_marginBottom="8dp" />
